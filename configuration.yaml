@@ -143,7 +143,7 @@ influxdb:
   host: a0d7b954-influxdb
   port: 8086
   database: homeassistant
-  username: kim
+  username: !secret username
   password: !secret influxdb_password
   max_retries: 3
   default_measurement: state
@@ -189,8 +189,7 @@ notify:
     encryption: starttls
     username: !secret email
     password: !secret emailpassword
-    recipient:
-      - 8106893953@mms.att.net
+    recipient: !secret recipient
     sender_name: "Home Assistant"
 
 # Panel Custom
