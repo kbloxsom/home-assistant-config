@@ -1,0 +1,30 @@
+sensor:
+
+  # ----- STATISTICS SENSORS -----
+  - platform: statistics
+    entity_id: sensor.utility_power
+    unique_id: utility_power
+    state_characteristic: mean
+    sampling_size: 20
+
+  - platform: statistics
+    entity_id: sensor.cruiser_aire_solar_power_production
+    name: rv_solar_power
+    unique_id: rv_solar_power
+    state_characteristic: mean
+    sampling_size: 20
+
+  - platform: statistics
+    entity_id: sensor.instant_energy_use
+    unique_id: energy_spent
+    state_characteristic: mean
+    sampling_size: 20
+
+  # ----- INTEGRATION SENSOR -----
+  - platform: integration
+    source: sensor.utility_power
+    name: utility_energy
+    unique_id: utility_energy
+    method: left
+    unit_prefix: k
+    round: 2

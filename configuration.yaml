@@ -1,0 +1,255 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  # unit_system: !secret unit_system
+  currency: !secret currency
+  time_zone: !secret time_zone
+  external_url: https://kbloxsom.duckdns.org:8124
+  internal_url: http://192.168.1.56:8123
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+
+default_config:
+
+# Compensation
+compensation:
+  rvbattery_soc_percent:
+    source: sensor.cruiser_aire_battery_voltage
+    unit_of_measurement: "%"
+    unique_id: rvbatterysocpercent
+    degree: 4
+    upper_limit: true
+    lower_limit: true
+    data_points:
+      - [54.4, 100]
+      - [53.6, 90]
+      - [53.1, 80]
+      - [52.8, 70]
+      - [52.3, 60]
+      - [52.2, 50]
+      - [52.0, 40]
+      - [51.5, 30]
+      - [51.2, 20]
+      - [48.0, 10]
+      - [40.0, 0]
+
+# Emulated Hue
+emulated_hue:
+  host_ip: 192.168.1.56
+  listen_port: 80
+  expose_by_default: true
+  exposed_domains:
+    - light
+    - fan
+    - switch
+    - cover
+  entities:
+    cover.mayfield:
+      name: Garage Door
+      hidden: false
+    switch.bedroom_fan_relay_1:
+      name: Bedroom Fan
+      hidden: false
+    light.bedroom_light_relay_1:
+      name: Bedroom Light
+      hidden: false
+    light.deck_light_deck_light:
+      name: Deck Light
+      hidden: false
+    light.front_porch_light_2:
+      name: Front Porch Light
+      hidden: false
+    light.front_porch_soffit_relay_1:
+      name: Front Porch Soffit Light
+      hidden: false
+    light.garage_door_lights_relay_1:
+      name: Garage Door Lights
+      hidden: false
+    light.garage_rear_door_light_garage_rear_door_light:
+      name: Rear Garage Door Light
+      hidden: false
+    light.garage_lights_2:
+      name: Garage Lights
+      hidden: false
+    light.gazebo_lights_relay:
+      name: Gazebo Lights
+      hidden: false
+    light.hall_light_2:
+      name: Hall Light
+      hidden: false
+    switch.kitchen_light:
+      name: "Kitchen Light"
+      hidden: false
+    light.living_room_fan:
+      name: Ceiling Fan
+      hidden: false
+    light.living_room_light:
+      name: Living Room Light
+      hidden: false
+    light.utility_room_light_utility_room_light:
+      name: Utility Room Light
+      hidden: false
+    fan.masterbath_fan:
+      name: Bathroom Fan
+      hidden: false
+    switch.christmas_tree_relay:
+      name: Christmas Tree
+      hidden: false
+
+# FFmpeg
+ffmpeg:
+
+# Binary Sensor
+binary_sensor:
+  - platform: sun2
+    monitored_conditions:
+      - elevation
+      - elevation: 3
+      - elevation:
+          above: -6
+          name: Above Civil Dawn
+
+# Camera
+camera:
+  - platform: ffmpeg
+    name: cam
+    input: /dev/input/video1
+
+# Frontend
+frontend:
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /local/card-mod.js
+
+# Google Assistant
+google_assistant:
+  project_id: home-assistant-d6a3c
+  service_account: !include service_account.json
+  report_state: true
+
+# HTTP
+http:
+  use_x_forwarded_for: true
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  trusted_proxies:
+    - 172.30.33.0/24
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# InfluxDB
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: kim
+  password: !secret influxdb_password
+  max_retries: 3
+  default_measurement: state
+
+# Logger
+logger:
+  logs:
+    homeassistant.components.shell_command: debug
+    scripts.create_video: debug
+
+# Media Source
+media_source:
+  media_dirs:
+    llmvision: /config/media/llmvision
+  allowlist_external_dirs:
+    - /config/www
+    - /config/media/llmvision # optional, if you also write to /media later
+# MQTT
+mqtt: !include mqtt.yaml
+
+# Notify
+notify:
+  - name: "mail_has_arrived"
+    platform: smtp
+    sender: !secret email
+    recipient:
+      - "8106893953@mms.att.net"
+      - "5862439690@mms.att.net"
+    server: "smtp.comcast.net"
+    port: 587
+    timeout: 15
+    username: !secret email
+    password: !secret emailpassword
+  - name: persistent_log
+    platform: file
+    filename: /config/persistent.log
+  - name: smtp_sms
+    platform: smtp
+    server: smtp.comcast.net
+    port: 587
+    timeout: 15
+    sender: homeassistant@yourdomain.com
+    encryption: starttls
+    username: !secret email
+    password: !secret emailpassword
+    recipient:
+      - 8106893953@mms.att.net
+    sender_name: "Home Assistant"
+
+# Panel Custom
+panel_custom:
+  - name: ha_system
+    sidebar_title: System Info
+    sidebar_icon: mdi:information-variant
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "hassio/system/info"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+
+# Recorder
+recorder:
+
+# Scene
+scene: !include scenes.yaml
+
+# Script
+script: !include scripts.yaml
+
+# Sensor
+sensor: !include_dir_merge_list sensor/
+
+# Shell Command
+shell_command:
+  create_video: python3 /config/scripts/create_video.py
+
+# Sonoff
+sonoff:
+  username: !secret email
+  password: !secret ewelink_password
+
+# Stream
+stream:
+  ll_hls: true
+  part_duration: 0.75
+  segment_duration: 6
+
+# System Log
+system_log:
+  fire_event: true
+
+# Text-to-Speech
+tts:
+  - platform: google_translate
+    cache: true
+    cache_dir: /tmp/tts
+    time_memory: 300
+    service_name: google_say
+
+# Utility Meter
+utility_meter: !include_dir_merge_named configs/
+
+# Group
+group: !include groups.yaml
+
+# Automation
+automation: !include automations.yaml

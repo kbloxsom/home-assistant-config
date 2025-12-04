@@ -1,0 +1,26 @@
+Yard_Lights:
+  name: Yard Lights
+  icon: mdi:lightbulb
+  entities:
+    - light.garage_door_lights_relay_1
+    - light.garagereardoorlight_masterbath_fan
+    - light.front_porch_light_2
+    - light.deck_light_deck_light
+    - light.front_porch_soffit_relay_1
+    - light.gazebo_lights_relay # Gazebo Lights
+Garage_Door_Lights:
+  name: Garage Door Lights
+  icon: mdi:lightbulb
+  entities:
+    - light.garage_door_lights_relay_1
+    - light.garagereardoorlight_masterbath_fan
+Leaving_Switches:
+  name: Leaving_Switches
+  icon: mdi:lightbulb
+  entities:
+    - switch.kitchen_light
+    - light.hall_light_2
+    - switch.living_room_light
+    - light.living_room_fan
+    - switch.bedroom_light_relay_1
+    - switch.bedroom_fan_relay_1
