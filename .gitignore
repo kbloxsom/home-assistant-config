@@ -1,0 +1,17 @@
+# 🔒 Never commit sensitive data
+secrets.yaml
+*.pem
+*.key
+*.db
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Addons and system data
+.cloud/
+.storage/
+tts/
+www/*.mp3
+media/*
+backups/
