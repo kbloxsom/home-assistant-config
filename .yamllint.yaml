@@ -1,0 +1,19 @@
+extends: default
+
+rules:
+  # Allow longer lines (HA templates can be long)
+  line-length:
+    max: 120
+    level: warning
+
+  # Keep indentation consistent but don’t break on multiline strings
+  indentation:
+    indent-sequences: consistent
+    check-multi-line-strings: false
+
+  # Enforce clean files
+  trailing-spaces: enable
+  new-line-at-end-of-file: enable
+
+  # Disable overly strict rules
+  comments-indentation: disable
