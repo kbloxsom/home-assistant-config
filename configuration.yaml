@@ -1,3 +1,4 @@
+---
 homeassistant:
   name: Home
   latitude: !secret latitude
@@ -160,7 +161,7 @@ media_source:
     llmvision: /config/media/llmvision
   allowlist_external_dirs:
     - /config/www
-    - /config/media/llmvision # optional, if you also write to /media later
+    - /config/media/llmvision
 # MQTT
 mqtt: !include mqtt.yaml
 

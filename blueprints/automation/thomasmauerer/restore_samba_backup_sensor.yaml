@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Restore Samba Backup sensor on startup
   description: Restore Samba Backup sensor on startup
@@ -8,7 +9,8 @@ blueprint:
       description: Select samba backup addon.
       selector:
         addon: {}
-  source_url: https://github.com/thomasmauerer/hassio-addons/blob/master/samba-backup/blueprints/restore_samba_backup_sensor.yaml
+  source_url: >
+    https://github.com/thomasmauerer/hassio-addons/blob/master/samba-backup/blueprints/restore_samba_backup_sensor.yaml
 mode: single
 trigger:
 - event: start

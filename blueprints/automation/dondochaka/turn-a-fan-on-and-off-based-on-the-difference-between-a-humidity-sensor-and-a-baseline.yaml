@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Humidity Management
   description: Turn a fan on and off based on the difference between a humidity sensor
@@ -56,7 +57,9 @@ blueprint:
           mode: slider
           step: 1.0
       default: 3
-  source_url: https://community.home-assistant.io/t/turn-a-fan-on-and-off-based-on-the-difference-between-a-humidity-sensor-and-a-baseline/255999
+source_url: >
+  https://community.home-assistant.io/t/turn-a-fan-on-and-off-based-on-the-
+  difference-between-a-humidity-sensor-and-a-baseline/255999
 trigger:
 - entity_id: !input humidity_sensor
   platform: state
@@ -65,14 +68,14 @@ trigger:
 condition:
 - condition: template
   value_template: '{{ mode != switch_state }}'
-#action:
-#- service: switch.turn_{{mode}}
+# action:
+# - service: switch.turn_{{mode}}
 #  entity_id: !input fan_switch
 action:
 - service: switch.turn_{{ mode }}
   entity_id: !input fan_switch
 - delay: '00:10:00'  # Add a delay of 10 minutes
-#- service: switch.turn_off  # Turn off the fan after the delay
+# - service: switch.turn_off  # Turn off the fan after the delay
 #  entity_id: !input fan_switch
 variables:
   reference_humidity: !input reference_humidity

@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Send a camera snapshot when motion is detected
   description: 'This automation blueprint creates a camera snapshot if motion is detected  and

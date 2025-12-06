@@ -1,3 +1,4 @@
+---
 blueprint:
   name: AI Event Summary (v1.5.1)
   author: valentinfrlch
@@ -244,7 +245,8 @@ blueprint:
             Mode
           description: "The file path to store the most current snapshot for the FIRST
             camera if using multiple camera entities. You can specifiy a custom location
-            as well.\n\nDefaults to `Media Folder - Secured` that references **/media/snapshots/<CAMERA_NAME>/last_motion.jpg**
+            as well.\n\nDefaults to `Media Folder - Secured` that references >
+              **/media/snapshots/<CAMERA_NAME>/last_motion.jpg**
             \n\n Try the `Public Folder - Unsecured` option that references **/config/www/snapshots/{{
             camera_file_path }}/last_motion.jpg** if you are having issues ***Note
             that this is unsecured and exposes the images to the web.***"
@@ -361,7 +363,8 @@ blueprint:
             uses first Camera Entity if using multiple cameras. Configured directly
             on the Android device -> Home Assistant App Setting -> Notifications.
             Use `Alarm` to use the device's loud alarm notification sound. You can
-            also type in your own channel name. [Learn More](https://companion.home-assistant.io/docs/notifications/notification-commands/#volume-level)
+            also type in your own channel name. [Learn More] >
+             (https://companion.home-assistant.io/docs/notifications/notification-commands/#volume-level)
             (default = Camera Name == {{ camera_entity_snapshot }} Snapshot).
           default: '{{ camera }} Snapshot'
           selector:
@@ -408,7 +411,8 @@ blueprint:
           name: Notification Sound - iOS Only
           description: 'You can specify a sound file on your device that will play
             for the notifications. You can import the sound file into Home Assistant
-            or enter the filename of the [pre-installed notification sound](https://companion.home-assistant.io/docs/notifications/notification-sounds/#pre-installed-notification-sounds)
+            or enter the filename of the [pre-installed notification sound] >
+              (https://companion.home-assistant.io/docs/notifications/notification-sounds/#pre-installed-notification-sounds)
             (example: US-EN-Alexa-Motion-Detected-Generic.wav).'
           default: default
           selector:

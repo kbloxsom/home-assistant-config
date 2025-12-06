@@ -1,3 +1,4 @@
+---
 blueprint:
   name: Frigate Notifications (0.14.0.2w)
   author: SgtBatten
@@ -12,7 +13,8 @@ blueprint:
     Configuration Options:\n  - Frigate Cameras\n  - Mobile Device (Running HA Companion
     App)\n\n### Features:\n  - Easily select the camera entities or mobile device
     using a drop-down menu.\n  - Configure multiple cameras in one automation. \n\n
-    \ For the full features list visit the [GitHub Repository][1]\n\n[1]: https://github.com/SgtBatten/HA_blueprints/blob/main/Frigate_Camera_Notifications\n\n##
+    \ For the full features list visit the [GitHub Repository][1]\n\n[1]: >
+      https://github.com/SgtBatten/HA_blueprints/blob/main/Frigate_Camera_Notifications\n\n##
     Support\nGo to https://github.com/SgtBatten/HA_blueprints to report bugs, request
     new features, or get support with your configuration.\n"
   domain: automation
@@ -145,7 +147,9 @@ blueprint:
               - label: 'Short:     e.g., Person detected - Side'
                 value: '{{ label }} detected - {{ camera_name }}'
               - label: Short with a timestamp HH:MM
-                value: '{{ label }} detected - {{ camera_name }} at {{event[''after''][''start_time'']|timestamp_custom(''%H:%M'')}}'
+                value: >
+                  '{{ label }} detected - {{ camera_name }} at {{event[''after'']
+                  [''start_time'']|timestamp_custom(''%H:%M'')}}'
               - label: 'Long:      e.g., A Person was detected on the Side camera
                   in the driveway.'
                 value: '{{ label }}{{ '' was'' if type == ''end'' else '''' }} detected
@@ -268,7 +272,8 @@ blueprint:
               - label: Snapshot cropped (2:1)
                 value: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?crop=1&format=android'
               - label: Snapshot cropped with bounding box (2:1)
-                value: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?bbox=1&crop=1&format=android'
+                value: >
+                  '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?bbox=1&crop=1&format=android'
               mode: dropdown
               custom_value: false
               multiple: false
@@ -308,7 +313,8 @@ blueprint:
               - label: Snapshot cropped (2:1)
                 value: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?crop=1&format=android'
               - label: Snapshot cropped with bounding box (2:1)
-                value: '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?bbox=1&crop=1&format=android'
+                value: >
+                  '{{base_url}}/api/frigate{{client_id}}/notifications/{{id}}/snapshot.jpg?bbox=1&crop=1&format=android'
               mode: dropdown
               custom_value: false
               multiple: false
