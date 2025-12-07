@@ -1,5 +1,4 @@
 ---
-logger:
-  logs:
-    homeassistant.components.shell_command: debug
-    scripts.create_video: debug
+logs:
+  homeassistant.components.shell_command: debug
+  scripts.create_video: debug
