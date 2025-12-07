@@ -1,9 +1,15 @@
 # 🔒 Never commit sensitive data
 secrets.yaml
+service_account.json
+.storage/
+home-assistant_v2.db
+*.log
+/ssl/*
+/media/*
+/config/persistent.log
 *.pem
 *.key
 *.db
-*.log
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
@@ -15,3 +21,4 @@ tts/
 www/*.mp3
 media/*
 backups/
+
