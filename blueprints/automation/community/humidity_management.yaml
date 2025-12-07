@@ -11,9 +11,10 @@ blueprint:
         entity:
           domain: sensor
     reference_humidity:
-        name: Reference Humidity
-        description: A percentage point value that indicates the baseline humidity if there is no reference sensor available
-        default: 60
+      name: Reference Humidity
+      description: A percentage point value that indicates the >
+        baseline humidity if there is no reference sensor available
+      default: 60
     reference_humidity_sensor:
       name: Reference Humidity Sensor
       description: A sensor that indicates the baseline humidity of the location
@@ -29,7 +30,8 @@ blueprint:
           domain: switch
     rising_threshold:
       name: Rising Threshold
-      description: How many percentage points above the reference humidity the sensor can rise before the fan is turned on
+      description: How many percentage points above the >
+        reference humidity the sensor can rise before the fan is turned on
       selector:
         number:
           min: 0
@@ -37,13 +39,14 @@ blueprint:
       default: 8
     falling_threshold:
       name: Falling Threshold
-      description: How many percentage points above the reference humidity the sensor must fall to before the fan is turned off
+      description: How many percentage points above the >
+        reference humidity the sensor must fall to before the fan is turned off
       selector:
         number:
           min: 0
           max: 100
       default: 3
-    
+
 trigger:
   - entity_id: !input humidity_sensor
     platform: state
