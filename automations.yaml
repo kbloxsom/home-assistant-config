@@ -328,14 +328,14 @@
 - id: '1696520007126'
   alias: Master Bath Humidity Management
   description: ''
-  use_blueprint:
-    path: humidity_management.yaml
-    input:
-      humidity_sensor: sensor.masterbathtemphum_master_bath_humidity
-      fan_switch: switch.masterbath_fan
-      rising_threshold: 10
-      reference_humidity_sensor: sensor.atc_8b9d_humidity
-      falling_threshold: 6
+use_blueprint:
+  path: community/humidity_management.yaml
+  input:
+    humidity_sensor: sensor.masterbathtemphum_master_bath_humidity
+    fan_switch: switch.masterbath_fan
+    rising_threshold: 10
+    reference_humidity_sensor: sensor.atc_8b9d_humidity
+    falling_threshold: 6
 - id: '1696768457571'
   alias: Restore Samba Backup sensor on startup
   description: ''
