@@ -1,4 +1,4 @@
-name: YAML Lint
+name: Validate Home Assistant Config
 
 on:
   push:
@@ -14,7 +14,6 @@ jobs:
   yamllint:
     name: Run yamllint
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,3 +28,17 @@ jobs:
 
       - name: Run yamllint
         run: yamllint .
+
+  ha-config-check:
+    name: Home Assistant Config Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Home Assistant config check
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/config \
+            ghcr.io/home-assistant/home-assistant:stable \
+            python -m homeassistant --config /config --script check_config
