@@ -1,1 +1,22 @@
-
+---
+# Compensation
+compensation:
+  rvbattery_soc_percent:
+    source: sensor.cruiser_aire_battery_voltage
+    unit_of_measurement: "%"
+    unique_id: rvbatterysocpercent
+    degree: 4
+    upper_limit: true
+    lower_limit: true
+    data_points:
+      - [54.4, 100]
+      - [53.6, 90]
+      - [53.1, 80]
+      - [52.8, 70]
+      - [52.3, 60]
+      - [52.2, 50]
+      - [52.0, 40]
+      - [51.5, 30]
+      - [51.2, 20]
+      - [48.0, 10]
+      - [40.0, 0]
