@@ -3,4 +3,3 @@ google_assistant:
   project_id: home-assistant-d6a3c
   service_account: !include service_account.json
   report_state: true
-
