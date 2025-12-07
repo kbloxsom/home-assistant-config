@@ -1,1 +1,4 @@
+---
+system_log:
+  fire_event: true
 
