@@ -4,37 +4,15 @@ homeassistant:
   latitude: !secret latitude
   longitude: !secret longitude
   elevation: !secret elevation
-  # unit_system: !secret unit_system
   currency: !secret currency
   time_zone: !secret time_zone
   external_url: !secret external_url
   internal_url: !secret internal_url
-  customize: !include customize.yaml
+  customize: !include/ui/customize.yaml
   packages: !include_dir_named packages
 
 default_config:
 
-# Compensation
-compensation:
-  rvbattery_soc_percent:
-    source: sensor.cruiser_aire_battery_voltage
-    unit_of_measurement: "%"
-    unique_id: rvbatterysocpercent
-    degree: 4
-    upper_limit: true
-    lower_limit: true
-    data_points:
-      - [54.4, 100]
-      - [53.6, 90]
-      - [53.1, 80]
-      - [52.8, 70]
-      - [52.3, 60]
-      - [52.2, 50]
-      - [52.0, 40]
-      - [51.5, 30]
-      - [51.2, 20]
-      - [48.0, 10]
-      - [40.0, 0]
 
 # Emulated Hue
 emulated_hue:
