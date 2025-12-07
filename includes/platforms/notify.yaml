@@ -27,4 +27,3 @@ notify:
     password: !secret emailpassword
     recipient: !secret recipient
     sender_name: Home Assistant
-
