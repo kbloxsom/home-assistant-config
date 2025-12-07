@@ -1,3 +1,5 @@
 ---
-homeassistant.components.shell_command: debug
-scripts.create_video: debug
+default: info
+logs:
+  homeassistant.components.shell_command: debug
+  scripts.create_video: debug
