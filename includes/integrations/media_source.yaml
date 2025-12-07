@@ -5,4 +5,3 @@ media_source:
   allowlist_external_dirs:
     - /config/www
     - /config/media/llmvision
-
