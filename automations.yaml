@@ -329,7 +329,7 @@
   alias: Master Bath Humidity Management
   description: ''
   use_blueprint:
-    path: dondochaka/turn-a-fan-on-and-off-based-on-the-difference-between-a-humidity-sensor-and-a-baseline.yaml
+    path: humidity_management.yaml
     input:
       humidity_sensor: sensor.masterbathtemphum_master_bath_humidity
       fan_switch: switch.masterbath_fan
