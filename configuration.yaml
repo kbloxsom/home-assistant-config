@@ -13,69 +13,43 @@ homeassistant:
 
 default_config:
 
+# Core UI
+frontend: !include includes/ui/frontend.yaml
 
-# Emulated Hue
-emulated_hue:
-  host_ip: !secret host_ip
-  listen_port: 80
-  expose_by_default: true
-  exposed_domains:
-    - light
-    - fan
-    - switch
-    - cover
-  entities:
-    cover.mayfield:
-      name: Garage Door
-      hidden: false
-    switch.bedroom_fan_relay_1:
-      name: Bedroom Fan
-      hidden: false
-    light.bedroom_light_relay_1:
-      name: Bedroom Light
-      hidden: false
-    light.deck_light_deck_light:
-      name: Deck Light
-      hidden: false
-    light.front_porch_light_2:
-      name: Front Porch Light
-      hidden: false
-    light.front_porch_soffit_relay_1:
-      name: Front Porch Soffit Light
-      hidden: false
-    light.garage_door_lights_relay_1:
-      name: Garage Door Lights
-      hidden: false
-    light.garage_rear_door_light_garage_rear_door_light:
-      name: Rear Garage Door Light
-      hidden: false
-    light.garage_lights_2:
-      name: Garage Lights
-      hidden: false
-    light.gazebo_lights_relay:
-      name: Gazebo Lights
-      hidden: false
-    light.hall_light_2:
-      name: Hall Light
-      hidden: false
-    switch.kitchen_light:
-      name: "Kitchen Light"
-      hidden: false
-    light.living_room_fan:
-      name: Ceiling Fan
-      hidden: false
-    light.living_room_light:
-      name: Living Room Light
-      hidden: false
-    light.utility_room_light_utility_room_light:
-      name: Utility Room Light
-      hidden: false
-    fan.masterbath_fan:
-      name: Bathroom Fan
-      hidden: false
-    switch.christmas_tree_relay:
-      name: Christmas Tree
-      hidden: false
+# Integrations
+http: !include includes/integrations/http.yaml
+influxdb: !include includes/integrations/influxdb.yaml
+google_assistant: !include includes/integrations/google_assistant.yaml
+ffmpeg: !include includes/integrations/ffmpeg.yaml
+panel_custom: !include includes/integrations/panel_custom.yaml
+recorder: !include includes/integrations/recorder.yaml
+logger: !include includes/integrations/logger.yaml
+media_source: !include includes/integrations/media_source.yaml
+stream: !include includes/integrations/stream.yaml
+system_log: !include includes/integrations/system_log.yaml
+tts: !include includes/integrations/tts.yaml
+sonoff: !include includes/integrations/sonoff.yaml
+
+# Platforms
+mqtt: !include includes/platforms/mqtt.yaml
+sensor: !include_dir_merge_list sensor
+binary_sensor: !include includes/platforms/binary_sensor.yaml
+camera: !include includes/platforms/camera.yaml
+notify: !include includes/platforms/notify.yaml
+shell_command: !include includes/platforms/shell_command.yaml
+
+# Domain helpers
+utility_meter: !include_dir_merge_named configs
+group: !include includes/helpers/group.yaml
+
+# User logic
+scene: !include scenes.yaml
+script: !include scripts.yaml
+automation: !include automations.yaml
+
+# Feature-specific math
+compensation: !include includes/platforms/compensation.yaml
+
 
 # FFmpeg
 ffmpeg:
