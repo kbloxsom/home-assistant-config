@@ -1,1 +1,5 @@
+---
+sonoff:
+  username: !secret email
+  password: !secret ewelink_password
 
