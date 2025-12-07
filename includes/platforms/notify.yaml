@@ -1,29 +1,28 @@
 ---
-notify:
-  - name: mail_has_arrived
-    platform: smtp
-    sender: !secret email
-    recipient:
-      - !secret notifyKim
-      - !secret notifyBarrie
-    server: smtp.comcast.net
-    port: 587
-    timeout: 15
-    username: !secret email
-    password: !secret emailpassword
+- name: mail_has_arrived
+  platform: smtp
+  sender: !secret email
+  recipient:
+    - !secret notifyKim
+    - !secret notifyBarrie
+  server: smtp.comcast.net
+  port: 587
+  timeout: 15
+  username: !secret email
+  password: !secret emailpassword
 
-  - name: persistent_log
-    platform: file
-    filename: /config/persistent.log
+- name: persistent_log
+  platform: file
+  filename: /config/persistent.log
 
-  - name: smtp_sms
-    platform: smtp
-    server: smtp.comcast.net
-    port: 587
-    timeout: 15
-    sender: homeassistant@yourdomain.com
-    encryption: starttls
-    username: !secret email
-    password: !secret emailpassword
-    recipient: !secret recipient
-    sender_name: Home Assistant
+- name: smtp_sms
+  platform: smtp
+  server: smtp.comcast.net
+  port: 587
+  timeout: 15
+  sender: homeassistant@yourdomain.com
+  encryption: starttls
+  username: !secret email
+  password: !secret emailpassword
+  recipient: !secret recipient
+  sender_name: Home Assistant
