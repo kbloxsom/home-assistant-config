@@ -6,4 +6,3 @@ http:
   trusted_proxies: !secret trusted_proxies
   ip_ban_enabled: true
   login_attempts_threshold: 5
-
