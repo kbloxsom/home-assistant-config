@@ -1,3 +1,4 @@
+---
 # Emulated Hue
 emulated_hue:
   host_ip: !secret host_ip
