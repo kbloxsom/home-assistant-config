@@ -7,4 +7,3 @@ influxdb:
   password: !secret influxdb_password
   max_retries: 3
   default_measurement: state
-
