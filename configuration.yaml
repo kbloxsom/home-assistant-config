@@ -8,7 +8,7 @@ homeassistant:
   time_zone: !secret time_zone
   external_url: !secret external_url
   internal_url: !secret internal_url
-  customize: !include/ui/customize.yaml
+# customize: !include/ui/customize.yaml
   packages: !include_dir_named packages
 
 default_config:
