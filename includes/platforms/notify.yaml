@@ -1,15 +1,15 @@
 ---
 - name: mail_has_arrived
   platform: smtp
-  sender: !secret email
+  sender: !secret smtp_sender
   recipient:
-    - !secret notifyKim
-    - !secret notifyBarrie
+    - !secret smtp_recipient1
+    - !secret smtp_recipient2
   server: smtp.comcast.net
   port: 587
   timeout: 15
-  username: !secret email
-  password: !secret emailpassword
+  username: !secret smtp_username
+  password: !secret smtp_password
 
 - name: persistent_log
   platform: file
