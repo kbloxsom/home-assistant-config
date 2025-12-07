@@ -1,1 +1,10 @@
+---
+binary_sensor:
+  - platform: sun2
+    monitored_conditions:
+      - elevation
+      - elevation: 3
+      - elevation:
+          above: -6
+          name: Above Civil Dawn
 
