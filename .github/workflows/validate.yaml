@@ -32,6 +32,9 @@ jobs:
   ha-config-check:
     name: Home Assistant Config Check
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ha_version: [stable, beta, dev]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,5 +43,5 @@ jobs:
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/config \
-            ghcr.io/home-assistant/home-assistant:stable \
+            ghcr.io/home-assistant/home-assistant:${{ matrix.ha_version }} \
             python -m homeassistant --config /config --script check_config
