@@ -24,7 +24,6 @@ ffmpeg: !include includes/integrations/ffmpeg.yaml
 panel_custom: !include includes/integrations/panel_custom.yaml
 recorder: !include includes/integrations/recorder.yaml
 logger: !include includes/integrations/logger.yaml
-media_source: !include includes/integrations/media_source.yaml
 stream: !include includes/integrations/stream.yaml
 system_log: !include includes/integrations/system_log.yaml
 tts: !include includes/integrations/tts.yaml
