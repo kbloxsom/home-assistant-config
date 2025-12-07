@@ -2,6 +2,9 @@
 extends: default
 
 rules:
+  truthy:
+    ignore: |
+      .github/workflows/*.yaml
   # Allow longer lines (HA templates can be long)
   line-length:
     max: 120
