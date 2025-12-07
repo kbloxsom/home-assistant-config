@@ -50,15 +50,6 @@ automation: !include automations.yaml
 # Feature-specific math
 compensation: !include includes/platforms/compensation.yaml
 
-# MQTT
-mqtt: !include mqtt.yaml
-
-# Scene
-scene: !include scenes.yaml
-
-# Script
-script: !include scripts.yaml
-
 # Sensor
 sensor: !include_dir_merge_list sensor/
 
