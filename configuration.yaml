@@ -49,27 +49,3 @@ automation: !include automations.yaml
 
 # Feature-specific math
 compensation: !include includes/platforms/compensation.yaml
-
-# Sensor
-sensor: !include_dir_merge_list sensor/
-
-# Shell Command
-shell_command:
-  create_video: python3 /config/scripts/create_video.py
-
-# Text-to-Speech
-tts:
-  - platform: google_translate
-    cache: true
-    cache_dir: /tmp/tts
-    time_memory: 300
-    service_name: google_say
-
-# Utility Meter
-utility_meter: !include_dir_merge_named configs/
-
-# Group
-group: !include groups.yaml
-
-# Automation
-automation: !include automations.yaml
