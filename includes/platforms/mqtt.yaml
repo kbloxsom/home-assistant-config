@@ -6,12 +6,12 @@ sensor:
     unit_of_measurement: 'W'
     icon: mdi:transmission-tower
     value_template: "{{ value_json.value | round (3) }}"
+		
   - name: "Garage Motion Sensor"
     state_topic: "stat/garage_motion_sensor/PIR1"
     availability_topic: "tele/garage_motion_sensor/LWT"
     payload_available: "Online"
     payload_not_available: "Offline"
-    
   - name: "Instant Energy Use"
     state_topic: "event/metering/instantaneous_demand"
     unit_of_measurement: "W"
@@ -91,7 +91,7 @@ light:
     payload_on: "ON"
     payload_off: "OFF"
     payload_available: "Online"
-    payload_not_available: "Offline"  
+    payload_not_available: "Offline"
     
 binary_sensor:
   - name: "Front Door Motion"
