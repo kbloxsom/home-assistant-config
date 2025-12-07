@@ -1,1 +1,8 @@
+---
+media_source:
+  media_dirs:
+    llmvision: /config/media/llmvision
+  allowlist_external_dirs:
+    - /config/www
+    - /config/media/llmvision
 
