@@ -6,7 +6,7 @@ sensor:
     unit_of_measurement: 'W'
     icon: mdi:transmission-tower
     value_template: "{{ value_json.value | round (3) }}"
-		
+
   - name: "Garage Motion Sensor"
     state_topic: "stat/garage_motion_sensor/PIR1"
     availability_topic: "tele/garage_motion_sensor/LWT"
@@ -92,7 +92,7 @@ light:
     payload_off: "OFF"
     payload_available: "Online"
     payload_not_available: "Offline"
-    
+
 binary_sensor:
   - name: "Front Door Motion"
     state_topic: "ring/bff646f4-52d5-423d-941e-2d5a21397ea5/camera/247d4dc344b6/motion/state"
