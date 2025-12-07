@@ -3,4 +3,3 @@ camera:
   - platform: ffmpeg
     name: cam
     input: /dev/input/video1
-
