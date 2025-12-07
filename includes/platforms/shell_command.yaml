@@ -1,1 +1,4 @@
+---
+shell_command:
+  create_video: python3 /config/scripts/create_video.py
 
