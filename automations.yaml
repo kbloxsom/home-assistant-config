@@ -1,785 +1,182 @@
 ---
 - id: '1632413597243'
-  alias: Samba backup sensor restore
-  description: ''
+  alias: Samba Backup Sensor Restore
+  description: Restore Samba Backup sensor state on Home Assistant startup
   trigger:
-  - platform: homeassistant
-    event: start
+    - platform: homeassistant
+      event: start
   condition: []
   action:
-  - service: hassio.addon_stdin
-    data:
-      addon: 15d21743_samba_backup
-      input: restore sensor
+    - service: hassio.addon_stdin
+      data:
+        addon: 15d21743_samba_backup
+        input: restore sensor
   mode: single
+
 - id: '1634858908611'
-  alias: Turn on lights at sunset
-  description: ''
+  alias: Turn On Lights at Sunset
+  description: Turn on yard lights 5 minutes before sunset
   trigger:
-  - platform: sun
-    event: sunset
-    offset: -00:05:00
-    id: sunset
+    - platform: sun
+      event: sunset
+      offset: -00:05:00
   condition: []
   action:
-  - service: light.turn_on
-    target:
-      entity_id: group.yard_lights
+    - service: light.turn_on
+      target:
+        entity_id: group.yard_lights
   mode: single
+
 - id: '1644045610314'
-  alias: Motion detected at front door - turn on all yard lights
-  description: ''
+  alias: Front Door Motion - Turn On Yard Lights
+  description: Turn on all yard lights when front door motion is detected after dark
   trigger:
-  - platform: event
-    event_type: front_door_motion
+    - platform: event
+      event_type: front_door_motion
   condition:
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-      after_offset: -00:30:00
-    - condition: sun
-      before: sunrise
-      before_offset: 00:15:00
-  - condition: time
-    after: '22:30:00'
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+          after_offset: -00:30:00
+        - condition: sun
+          before: sunrise
+          before_offset: 00:15:00
+    - condition: time
+      after: '22:30:00'
   action:
-  - service: light.turn_on
-    target:
-      entity_id: group.yard_lights
-  - delay:
-      hours: 0
-      minutes: 30
-      seconds: 0
-  - service: light.turn_off
-    target:
-      entity_id: group.yard_lights
+    - service: light.turn_on
+      target:
+        entity_id: group.yard_lights
+    - delay:
+        minutes: 30
+    - service: light.turn_off
+      target:
+        entity_id: group.yard_lights
   mode: single
+
 - id: '1634859253974'
-  alias: Turn off yard lights at night
-  description: ''
+  alias: Turn Off Yard Lights at Night
+  description: Turn off yard lights at 11:55 PM
   trigger:
-  - platform: time
-    at: '23:55:00'
+    - platform: time
+      at: '23:55:00'
   condition: []
   action:
-  - service: light.turn_off
-    target:
-      entity_id: group.yard_lights
+    - service: light.turn_off
+      target:
+        entity_id: group.yard_lights
   mode: single
+
 - id: '1635263376971'
-  alias: Turn on the garage lights when motion is detected
-  description: ''
+  alias: Garage Lights On Motion
+  description: Turn on garage lights and bench switch when motion or garage door opening is detected
   trigger:
-  - platform: state
-    entity_id: binary_sensor.1000aea811_302a019a04b0556c69
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: binary_sensor.1000aea811_14
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: cover.mayfield
-    from: closed
-    to: opening
+    - platform: state
+      entity_id: binary_sensor.1000aea811_302a019a04b0556c69
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.1000aea811_14
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: cover.mayfield
+      from: closed
+      to: opening
   condition: []
   action:
-  - service: light.turn_on
-    target:
-      entity_id: light.garage_lights_2
-  - service: switch.turn_on
-    target:
-      entity_id: switch.garage_bench_switch_relay
-  - delay:
-      seconds: 10
+    - service: light.turn_on
+      target:
+        entity_id: light.garage_lights_2
+    - service: switch.turn_on
+      target:
+        entity_id: switch.garage_bench_switch_relay
+    - delay:
+        seconds: 10
   mode: single
+
 - id: '1635264539441'
-  alias: Turn off garage lights on no motion
-  description: Turn off lights after 20 minutes if no motion detected
+  alias: Garage Lights Off on No Motion
+  description: Turn off garage lights after 20 minutes of no motion if garage is unoccupied
   trigger:
-  - platform: state
-    entity_id: binary_sensor.1000aea811_14
-    from: 'on'
-    to: 'off'
-    for:
-      minutes: 20
+    - platform: state
+      entity_id: binary_sensor.1000aea811_14
+      from: 'on'
+      to: 'off'
+      for:
+        minutes: 20
   condition:
-  - condition: state
-    entity_id: input_boolean.garage_occupied
-    state: 'off'
+    - condition: state
+      entity_id: input_boolean.garage_occupied
+      state: 'off'
   action:
-  - service: light.turn_off
-    target:
-      entity_id: light.garage_lights_2
-  - service: switch.turn_off
-    target:
-      entity_id: switch.garage_bench_switch_relay
-- id: '1636662663421'
-  alias: Mail box opened
-  triggers:
-  - event_type: sonoff.remote
-    event_data:
-      name: Mailbox
-    trigger: event
-  actions:
-  - action: notify.mobile_app_bloxsom
-    data:
-      message: '"Mailbox has been opened!"'
-  - delay:
-      minutes: 5
+    - service: light.turn_off
+      target:
+        entity_id: light.garage_lights_2
+    - service: switch.turn_off
+      target:
+        entity_id: switch.garage_bench_switch_relay
   mode: single
+
+- id: '1636662663421'
+  alias: Mailbox Opened
+  description: Notify when mailbox is opened
+  trigger:
+    - platform: event
+      event_type: sonoff.remote
+      event_data:
+        name: Mailbox
+  condition: []
+  action:
+    - service: notify.mobile_app_bloxsom
+      data:
+        message: "Mailbox has been opened!"
+    - delay:
+        minutes: 5
+  mode: single
+
 - id: '1635263376973'
   alias: AS Update Last Motion
+  description: Update last motion sensor history
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.1000aea811_0
-    - binary_sensor.1000aea811_1
-    - binary_sensor.1000aea811_2
-    - binary_sensor.1000aea811_3
-    - binary_sensor.1000aea811_4
-    - binary_sensor.1000aea811_5
-    - binary_sensor.1000aea811_6
-    - binary_sensor.1000aea811_7
-    - binary_sensor.1000aea811_8
-    - binary_sensor.1000aea811_9
-    - binary_sensor.1000aea811_10
-    - binary_sensor.1000aea811_11
-    - binary_sensor.1000aea811_12
-    - binary_sensor.1000aea811_13
-    - binary_sensor.1000aea811_14
-    to: 'on'
-  action:
-  - service: variable.update_sensor
-    data:
-      attributes:
-        history_1: '{{ states(''sensor.last_motion'') }}'
-        history_2: '{{ state_attr(''sensor.last_motion'', ''history_1'') }}'
-        history_3: '{{ state_attr(''sensor.last_motion'', ''history_2'') }}'
-        history_4: '{{ state_attr(''sensor.last_motion'', ''history_3'') }}'
-        history_5: '{{ state_attr(''sensor.last_motion'', ''history_4'') }}'
-        history_6: '{{ state_attr(''sensor.last_motion'', ''history_5'') }}'
-        history_7: '{{ state_attr(''sensor.last_motion'', ''history_6'') }}'
-        history_8: '{{ state_attr(''sensor.last_motion'', ''history_7'') }}'
-        history_9: '{{ state_attr(''sensor.last_motion'', ''history_8'') }}'
-        history_10: '{{ state_attr(''sensor.last_motion'', ''history_9'') }}'
-      replace_attributes: true
-    target:
-      entity_id: sensor.last_motion
-  - service: variable.update_sensor
-    data_template:
-      entity_id: sensor.last_motion
-      value: '{{ trigger.to_state.attributes.friendly_name }} : {{ as_timestamp(trigger.to_state.last_changed)
-        | timestamp_custom(''%x, %X'') }}'
-- id: '1640045610314'
-  alias: Turn on Hall light on motion
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.1000aea811_11
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-      after_offset: -00:30:00
-    - condition: sun
-      before: sunrise
-      before_offset: 00:15:00
-    - condition: numeric_state
-      entity_id: sensor.solar_inverter_grid_power
-      above: 0
-      below: 40
-  action:
-  - service: light.turn_on
-    target:
+    - platform: state
       entity_id:
-      - light.hall_light
-      - light.hall_light_2
-  mode: single
-- id: '1640112667579'
-  alias: Hall Motion
-  description: ''
-  trigger:
-  - platform: event
-    event_type: sonoff.remote
-    event_data:
-      name: Hallway_motion
-  condition: []
+        - binary_sensor.1000aea811_0
+        - binary_sensor.1000aea811_1
+        - binary_sensor.1000aea811_2
+        - binary_sensor.1000aea811_3
+        - binary_sensor.1000aea811_4
+        - binary_sensor.1000aea811_5
+        - binary_sensor.1000aea811_6
+        - binary_sensor.1000aea811_7
+        - binary_sensor.1000aea811_8
+        - binary_sensor.1000aea811_9
+        - binary_sensor.1000aea811_10
+        - binary_sensor.1000aea811_11
+        - binary_sensor.1000aea811_12
+        - binary_sensor.1000aea811_13
+        - binary_sensor.1000aea811_14
+      to: 'on'
   action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.hall_motion
-  - delay:
-      seconds: 1
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.hall_motion
-  mode: single
-- id: '1640112667979'
-  alias: Utility Motion
-  description: ''
-  trigger:
-  - platform: event
-    event_type: sonoff.remote
-    event_data:
-      name: Utility_motion
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.utility_motion
-  - delay:
-      seconds: 1
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.utility_motion
-  mode: single
-- id: '1640119709525'
-  alias: Turn on utility light on motion
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.utility_motion
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.utility_room_light_utility_room_light
-  mode: single
-- id: '1649264902141'
-  alias: Download Failed Notification
-  description: ''
-  trigger:
-  - platform: event
-    event_type: downloader_download_failed
-  condition: []
-  action:
-  - service: persistent_notification.create
-  mode: single
-- id: '1671897141271'
-  alias: Motion detected at front door
-  description: Save video when motion detected at front door
-  trigger:
-  - platform: event
-    event_type: front_door_motion
-  action:
-  - delay:
-      seconds: 1
-  - service: camera.snapshot
-    target:
-      entity_id: camera.front_door_snapshot
-    data:
-      filename: /config/www/tmp/front_door_snapshot.jpg
-  - service: notify.mobile_app_iphonese_kim
-    data:
-      message: Motion detected at front door
+    - service: variable.update_sensor
       data:
-        image: /config/www/tmp/front_door_snapshot.jpg
-- id: '1687385718594'
-  alias: Create video from photos
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:30:00
-  condition: []
-  action:
-  - service: shell_command.create_video
-  mode: single
-- id: '1571544830794444'
-  alias: I'm home telegram
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: person.kim
-    from: away
-    to: home
-  condition: []
-  action:
-  - service: telegram_bot.send_message
-    data:
-      title: Subscribe to Kiril's channel
-      message: Please
-      data:
-        photo:
-        - url: https://www.irishexaminer.com/news/spotlight/arid-41198158.html
-          caption: Tux
-- id: '1695739419604'
-  alias: Turn off bath fan
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.masterbath_fan
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 1
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id: switch.masterbath_fan
-  mode: single
-- id: '1696520007126'
-  alias: Master Bath Humidity Management
-  description: ''
-  use_blueprint:
-    path: community/humidity_management.yaml
-    input:
-      humidity_sensor: sensor.masterbathtemphum_master_bath_humidity
-      fan_switch: switch.masterbath_fan
-      rising_threshold: 10
-      reference_humidity_sensor: sensor.atc_8b9d_humidity
-      falling_threshold: 6
-- id: '1696768457571'
-  alias: Restore Samba Backup sensor on startup
-  description: ''
-  use_blueprint:
-    path: thomasmauerer/restore_samba_backup_sensor.yaml
-    input:
-      addon: 15d21743_samba_backup
-- id: '1697911980497'
-  alias: Master bath Fan Timer Start
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: fan.masterbath_fan
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: timer.start
-    target:
-      entity_id: timer.bike_charger_on_time
-  mode: single
-- id: '1697912248662'
-  alias: Master Bath Timer Finish
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: fan.masterbath_fan
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - service: timer.finish
-    target:
-      entity_id: timer.bike_charger_on_time
-  mode: single
-- id: '1703785786819'
-  alias: Power Cycle Verizon Internet
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.8_8_8_8
-    from: 'on'
-    to: 'off'
-    for:
-      minutes: 5
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id: dd9d650c042bc9dcd4b2b69e69797de2
-  mode: single
-- id: '1733453096662'
-  alias: Turn on yard lights before sunrise
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: -00:45:00
-    id: sunrise
-  condition: []
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: group.yard_lights
-  mode: single
-- id: '1733453227212'
-  alias: Turn off yard lights at sunrise
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: 00:05:00
-  condition: []
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: group.yard_lights
-  mode: single
-- id: '1734976690295'
-  alias: Turn on Christmas Tree
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunrise
-    offset: -01:00:00
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: 5b883338d7370aecb422abddd06db73d
-  mode: single
-- id: '1734976900970'
-  alias: Turn off Christmas Tree
-  description: ''
-  trigger:
-  - platform: time
-    at: '23:30:00'
-  condition: []
-  action:
-  - service: switch.toggle
-    target:
-      entity_id: 5b883338d7370aecb422abddd06db73d
-  mode: single
-- id: '1748799487116'
-  alias: LLM Ring camera Person Detection
-  description: Trigger from Frigate event JSON for Ring_Camera person
-  triggers:
-  - trigger: mqtt
-    topic: frigate/events
-    value_template: "{{ value_json.after is defined and\n   value_json.after.camera
-      == 'Ring_Camera' and\n   value_json.after.label == 'person' and\n   value_json.type
-      in ['new'] }}"
-    payload: 'True'
-  conditions: []
-  actions:
-  - variables:
-      snapshot_create_file_path: /config/www/tmp/ring_camera_snapshot_{{ now().strftime('%Y%m%d%H%M%S')
-        }}.jpg
-      snapshot_access_file_path: '{{ snapshot_create_file_path | replace(''/config/www'',''/local'')
-        }}'
-  - delay: 2
-  - action: camera.snapshot
-    target:
-      entity_id: camera.192_168_1_66
-    data:
-      filename: '{{ snapshot_create_file_path }}'
-  - delay: 2
-  - action: llmvision.image_analyzer
-    data:
-      remember: false
-      use_memory: false
-      include_filename: false
-      target_width: 1280
-      max_tokens: 100
-      temperature: 0.2
-      generate_title: false
-      expose_images: false
-      image_file: '{{ snapshot_create_file_path }}'
-      provider: 01JWM1FDPQDKD6NA9CYYF5G74X
-      message: Check if the face matches a known individual from the memory. If yes,
-        mention their name. If the person is not recognised, describe their appearance
-        (clothing, accessories, posture). Based on contextual clues, infer their possible
-        role (e.g., carrying a package-+ delivery person, wearing uniform -+ staff,
-        standing at door without items -+ visitor, wearing security vest-+ guard).
-        If there isn't anyone mention in a funny tone, you can see a ghost
-    response_variable: response
-  - action: notify.mobile_app_bloxsom
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      data:
-        image: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-          ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-        actions:
-        - action: URI
-          title: Open Camera
-          uri: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-            ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-  - action: notify.smtp_sms
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
+        attributes:
+          history_1: "{{ states('sensor.last_motion') }}"
+          history_2: "{{ state_attr('sensor.last_motion', 'history_1') }}"
+          history_3: "{{ state_attr('sensor.last_motion', 'history_2') }}"
+          history_4: "{{ state_attr('sensor.last_motion', 'history_3') }}"
+          history_5: "{{ state_attr('sensor.last_motion', 'history_4') }}"
+          history_6: "{{ state_attr('sensor.last_motion', 'history_5') }}"
+          history_7: "{{ state_attr('sensor.last_motion', 'history_6') }}"
+          history_8: "{{ state_attr('sensor.last_motion', 'history_7') }}"
+          history_9: "{{ state_attr('sensor.last_motion', 'history_8') }}"
+          history_10: "{{ state_attr('sensor.last_motion', 'history_9') }}"
+        replace_attributes: true
       target:
-      - 8106893953@mms.att.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-  - action: notify.smtp_sms
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - kbloxsom@comcast.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-  mode: single
-- id: '1749399112017'
-  alias: LLM Person Detection Northeast camera
-  description: Trigger from Frigate event JSON for Northeast Camera person
-  triggers:
-  - trigger: mqtt
-    topic: frigate/events
-    value_template: "{{ value_json.after is defined and\n   value_json.after.camera
-      == 'Northeast_Camera' and\n   value_json.after.label == 'person' and\n   value_json.type
-      in ['new'] }}"
-    payload: 'True'
-  conditions: []
-  actions:
-  - variables:
-      file_name: northeast_{{ now().strftime('%Y%m%d%H%M%S') }}.jpg
-      snapshot_create_file_path: /config/www/tmp/{{ file_name }}
-      snapshot_access_file_path: /local/tmp/{{ file_name }}
-  - delay: 1
-  - action: camera.snapshot
-    target:
-      entity_id: camera.northeast_camera
-    data:
-      filename: '{{ snapshot_create_file_path }}'
-  - delay: 1
-  - action: llmvision.image_analyzer
-    data:
-      remember: false
-      use_memory: false
-      include_filename: false
-      target_width: 1280
-      max_tokens: 100
-      temperature: 0.2
-      generate_title: false
-      expose_images: false
-      image_file: '{{ snapshot_create_file_path }}'
-      provider: 01JWM1FDPQDKD6NA9CYYF5G74X
-      message: Check if the face matches a known individual from the memory. If yes,
-        mention their name. If the person is not recognised, describe their appearance
-        (clothing, accessories, posture). Based on contextual clues, infer their possible
-        role (e.g., carrying a package -> delivery person, wearing uniform -> staff,
-        standing at door without items -> visitor, wearing security vest -> guard).
-        If there isn't anyone, in a funny tone say you see a ghost.
-    response_variable: response
-  - action: notify.mobile_app_bloxsom
-    data:
-      title: Northeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      data:
-        image: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-          ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-        actions:
-        - action: URI
-          title: Open Camera
-          uri: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-            ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-    enabled: true
-  - action: notify.smtp_sms
-    data:
-      title: Northeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - 8106893953@mms.att.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
-  - action: notify.smtp_sms
-    data:
-      title: Northeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - kbloxsom@comcast.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
-  mode: single
-- id: '1749400936115'
-  alias: Debug Frigate MQTT Events
-  description: Logs Frigate MQTT events for troubleshooting
-  triggers:
-  - topic: frigate/events
-    trigger: mqtt
-  actions:
-  - data:
-      name: Frigate Event
-      message: '{{ trigger.payload }}'
-    action: logbook.log
-  mode: single
-- id: '1756846743899'
-  alias: LLM Person Detection Driveway_Camera
-  description: Trigger from Frigate event JSON for Driveway_Camera person
-  triggers:
-  - trigger: mqtt
-    topic: frigate/events
-    value_template: "{{ value_json.after is defined and\n   value_json.after.camera
-      == 'Driveway_Camera' and\n   value_json.after.label == 'person' and\n   value_json.type
-      in ['new'] }}"
-    payload: 'True'
-  conditions: []
-  actions:
-  - variables:
-      snapshot_create_file_path: /config/www/tmp/driveway_camera_snapshot_{{ now().strftime('%Y%m%d%H%M%S')
-        }}.jpg
-      snapshot_access_file_path: '{{ snapshot_create_file_path | replace(''/config/www'',''/local'')
-        }}'
-  - delay: 2
-  - action: camera.snapshot
-    target:
-      entity_id: camera.192_168_1_66
-    data:
-      filename: '{{ snapshot_create_file_path }}'
-  - delay: 2
-  - action: llmvision.image_analyzer
-    data:
-      remember: false
-      use_memory: false
-      include_filename: false
-      target_width: 1280
-      max_tokens: 100
-      temperature: 0.2
-      generate_title: false
-      expose_images: false
-      image_file: '{{ snapshot_create_file_path }}'
-      provider: 01JWM1FDPQDKD6NA9CYYF5G74X
-      message: Check if the face matches a known individual from the memory. If yes,
-        mention their name. If the person is not recognised, describe their appearance
-        (clothing, accessories, posture). Based on contextual clues, infer their possible
-        role (e.g., carrying a package-+ delivery person, wearing uniform -+ staff,
-        standing at door without items -+ visitor, wearing security vest-+ guard).
-        If there isn't anyone mention in a funny tone, you can see a ghost
-    response_variable: response
-  - action: notify.mobile_app_bloxsom
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      data:
-        image: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-          ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-        actions:
-        - action: URI
-          title: Open Camera
-          uri: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-            ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-    enabled: true
-  - action: notify.smtp_sms
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - 8106893953@mms.att.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
-  - action: notify.smtp_sms
-    data:
-      title: Driveway Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - kbloxsom@comcast.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
-  mode: single
-- id: '1756908028046'
-  alias: AI Summary person detected
-  description: ''
-  use_blueprint:
-    path: valentinfrlch/event_summary.yaml
-    input:
-      camera_entities:
-      - camera.192_168_1_66
-      motion_sensors:
-      - binary_sensor.driveway_camera_person_occupancy
-      use_memory: true
-      provider: 01JWM1FDPQDKD6NA9CYYF5G74X
-      notify_device:
-      - 21ffc8447d1b571b127d4295993ec14e
-      preview_mode: Live Preview
-      analysis_mode: Live Preview
-      model: gemini-2.0-flash
-- id: '1756921358801'
-  alias: LLM Person Detection Southeast camera
-  description: Trigger from Frigate event JSON for Southeast Camera person
-  triggers:
-  - trigger: mqtt
-    topic: frigate/events
-    value_template: "{{ value_json.after is defined and\n   value_json.after.camera
-      == 'Southeast_Camera' and\n   value_json.after.label == 'person' and\n   value_json.type
-      in ['new'] }}"
-    payload: 'True'
-  conditions: []
-  actions:
-  - variables:
-      snapshot_create_file_path: /config/www/tmp/southeast_camera_snapshot_{{ now().strftime('%Y%m%d%H%M%S')
-        }}.jpg
-      snapshot_access_file_path: '{{ snapshot_create_file_path | replace(''/config/www'',''/local'')
-        }}'
-  - delay: 2
-  - action: camera.snapshot
-    data:
-      filename: '{{ snapshot_create_file_path }}'
-    target:
-      entity_id: camera.Southeast_Camera
-  - delay: 2
-  - action: llmvision.image_analyzer
-    data:
-      remember: false
-      use_memory: false
-      include_filename: false
-      target_width: 1280
-      max_tokens: 100
-      temperature: 0.2
-      generate_title: false
-      expose_images: false
-      image_file: '{{ snapshot_create_file_path }}'
-      provider: 01JWM1FDPQDKD6NA9CYYF5G74X
-      message: Check if the face matches a known individual from the memory. If yes,
-        mention their name. If the person is not recognised, describe their appearance
-        (clothing, accessories, posture). Based on contextual clues, infer their possible
-        role (e.g., carrying a package-+ delivery person, wearing uniform -+ staff,
-        standing at door without items -+ visitor, wearing security vest-+ guard).
-        If there isn't anyone mention in a funny tone, you can see a ghost
-    response_variable: response
-  - action: notify.mobile_app_bloxsom
-    data:
-      title: Southeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      data:
-        image: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-          ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-        actions:
-        - action: URI
-          title: Open Camera
-          uri: "{{ 'https://kbloxsom.duckdns.org:8124' ~ snapshot_access_file_path
-            ~\n   '?' ~ (as_timestamp(now()) | string) }}"
-    enabled: true
-  - action: notify.smtp_sms
-    data:
-      title: Southeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - 8106893953@mms.att.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
-  - action: notify.smtp_sms
-    data:
-      title: Southeast Person Detected
-      message: '{{ response.response_text }} {{ now().strftime(''%-I:%M %p (%m-%d-%y)'')
-        }}'
-      target:
-      - kbloxsom@comcast.net
-      data:
-        images:
-        - '{{ snapshot_create_file_path }}'
-    enabled: false
+        entity_id: sensor.last_motion
+    - service: variable.update_sensor
+      data_template:
+        entity_id: sensor.last_motion
+        value: "{{ trigger.to_state.attributes.friendly_name }} : {{ as_timestamp(trigger.to_state.last_changed) | timestamp_custom('%x, %X') }}"
   mode: single
