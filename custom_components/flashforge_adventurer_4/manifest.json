@@ -1,0 +1,12 @@
+{
+  "domain": "flashforge_adventurer_4",
+  "name": "FlashForge Adventurer 4",
+  "codeowners": ["@modrzew","@darek-margas"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/darek-margas/hass-flashforge-adventurer-4/",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/darek-margas/hass-flashforge-adventurer-4/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
